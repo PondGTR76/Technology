@@ -23,11 +23,12 @@
             #67e8f9, #a5b4fc, #f0abfc, #99f6e4, #67e8f9);
 
   /* สีป้ายหมวดหมู่ (โทนทึบ อ่านง่าย แบบเทมเพลตข่าว) */
-  --cat-ai:      #2563eb;
-  --cat-drone:   #dc2626;
-  --cat-cyber:   #7c3aed;
-  --cat-comms:   #059669;
-  --cat-energy:  #d97706;
+  --cat-ai:       #2563eb;
+  --cat-drone:    #dc2626;
+  --cat-cyber:    #7c3aed;
+  --cat-comms:    #059669;
+  --cat-energy:   #d97706;
+  --cat-weapons:  #57534e;
   --cat-default: #0e7fa8;
 
   /* เงา */
@@ -163,6 +164,7 @@ a:hover { text-decoration: underline; }
   justify-content: center;
   padding: 40px 20px;
 }
+.auth-gate[hidden] { display: none; }
 
 .auth-gate-card {
   width: 100%;
@@ -187,6 +189,18 @@ a:hover { text-decoration: underline; }
   margin: 0 0 22px;
 }
 .auth-gate-card .btn { width: 100%; padding: 12px 18px; }
+
+.auth-gate-warn {
+  background: var(--magenta-soft);
+  border: 1px solid var(--magenta);
+  border-radius: var(--radius);
+  color: var(--ink);
+  font-size: .82rem;
+  line-height: 1.5;
+  padding: 12px 14px;
+  margin: 0 0 16px;
+  text-align: left;
+}
 
 /* ---------- 5b. Section heading (ใช้ร่วมกันทุกโซน) ---------- */
 .section-head {
@@ -575,11 +589,12 @@ a:hover { text-decoration: underline; }
   padding: 3px 10px;
   border-radius: 4px;
 }
-.card-cat.cat-ai     { background: var(--cat-ai); }
-.card-cat.cat-drone  { background: var(--cat-drone); }
-.card-cat.cat-cyber  { background: var(--cat-cyber); }
-.card-cat.cat-comms  { background: var(--cat-comms); }
-.card-cat.cat-energy { background: var(--cat-energy); }
+.card-cat.cat-ai      { background: var(--cat-ai); }
+.card-cat.cat-drone   { background: var(--cat-drone); }
+.card-cat.cat-cyber   { background: var(--cat-cyber); }
+.card-cat.cat-comms   { background: var(--cat-comms); }
+.card-cat.cat-energy  { background: var(--cat-energy); }
+.card-cat.cat-weapons { background: var(--cat-weapons); }
 
 .card-date {
   flex: 0 0 auto;

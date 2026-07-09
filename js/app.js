@@ -148,12 +148,17 @@ function render() {
   const items = getVisibleItems();
 
   if (!items.length) {
-    grid.innerHTML = `
-      <div class="state-box">
-        <div class="state-icon">🔍</div>
-        <h3>ไม่พบเทคโนโลยีที่ค้นหา</h3>
-        <p>ลองเปลี่ยนคำค้นหรือเลือกหมวดหมู่อื่น</p>
-      </div>`;
+    grid.innerHTML = state.all.length
+      ? `<div class="state-box">
+          <div class="state-icon">🔍</div>
+          <h3>ไม่พบเทคโนโลยีที่ค้นหา</h3>
+          <p>ลองเปลี่ยนคำค้นหรือเลือกหมวดหมู่อื่น</p>
+        </div>`
+      : `<div class="state-box">
+          <div class="state-icon">🛰️</div>
+          <h3>ยังไม่มีข้อมูลเทคโนโลยี</h3>
+          <p>เร็วๆ นี้จะมีการอัปเดตเนื้อหาเทคโนโลยี</p>
+        </div>`;
     return;
   }
 
