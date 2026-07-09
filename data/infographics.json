@@ -1,0 +1,20 @@
+[
+  { "id": "ig-01", "image": "assets/images/infographics/infographic-01.webp", "title": "XM157 SMART OPTIC ศูนย์เล็งอัจฉริยะแห่งอนาคต" },
+  { "id": "ig-02", "image": "assets/images/infographics/infographic-02.webp", "title": "กลไกการลุกไหม้ของแบตเตอรี่ EV และเทคโนโลยี NMC" },
+  { "id": "ig-03", "image": "assets/images/infographics/infographic-03.webp", "title": "EDGE ClearSky ระบบตรวจจับและสกัดกั้นโดรนด้วย AI" },
+  { "id": "ig-04", "image": "assets/images/infographics/infographic-04.webp", "title": "NARIT TECH ต้นแบบระบบตรวจจับอากาศยานไร้คนขับ" },
+  { "id": "ig-05", "image": "assets/images/infographics/infographic-05.webp", "title": "RS-28 SARMAT ขีปนาวุธข้ามทวีป (SATAN II)" },
+  { "id": "ig-06", "image": "assets/images/infographics/infographic-06.webp", "title": "NGAD & CCA พลิกโฉมสงครามน่านฟ้าสัญชาติอเมริกัน" },
+  { "id": "ig-07", "image": "assets/images/infographics/infographic-07.webp", "title": "DEW อาวุธพลังงานลำแสงทำลายล้าง" },
+  { "id": "ig-08", "image": "assets/images/infographics/infographic-08.webp", "title": "โดรน FPV ไฟเบอร์ออปติก มัจจุราชไร้คลื่น" },
+  { "id": "ig-09", "image": "assets/images/infographics/infographic-09.webp", "title": "GeForce RTX 5070 Ti กับงาน AI และการวิจัยร่วมกับโดรน" },
+  { "id": "ig-10", "image": "assets/images/infographics/infographic-10.webp", "title": "ทวงคืนอธิปไตยทางข้อมูลด้วย Sovereign AI & Local LLM" },
+  { "id": "ig-11", "image": "assets/images/infographics/infographic-11.webp", "title": "UNITREE G1 หุ่นยนต์ฮิวแมนนอยด์ อัปเดต 2026" },
+  { "id": "ig-12", "image": "assets/images/infographics/infographic-12.webp", "title": "หุ่นยนต์สำรวจดาวอังคาร ว่ายทรายเหมือนกิ้งก่าทราย" },
+  { "id": "ig-13", "image": "assets/images/infographics/infographic-13.webp", "title": "THE REAL AI EDGE ความฉลาดระดับสวมใส่ (Meta Glasses)" },
+  { "id": "ig-14", "image": "assets/images/infographics/infographic-14.webp", "title": "ระบบศูนย์เล็ง SMASH 3000 อัจฉริยะ แม่นยำ" },
+  { "id": "ig-15", "image": "assets/images/infographics/infographic-15.webp", "title": "LIFEPODS แคปซูลหลบภัย" },
+  { "id": "ig-16", "image": "assets/images/infographics/infographic-16.webp", "title": "NRIIS คืออะไร? ทำไมคนอยากทำโปรเจกต์ต้องรู้จัก" },
+  { "id": "ig-17", "image": "assets/images/infographics/infographic-17.webp", "title": "EMBEDDED AI IN MILITARY DRONES ปัญญาประดิษฐ์ฝังตัว" },
+  { "id": "ig-18", "image": "assets/images/infographics/infographic-18.webp", "title": "CONNECTED BALL TECHNOLOGY ลูกฟุตบอลยุคใหม่" }
+]

@@ -74,6 +74,22 @@
       <div class="popular-strip" id="popularStrip"></div>
     </section>
 
+    <!-- ===== อินโฟกราฟฟิก: แกลเลอรี 3D Coverflow (แยกจากระบบเทคโนโลยี) ===== -->
+    <section class="infographic-section" id="infographicSection" aria-label="อินโฟกราฟฟิก" tabindex="0">
+      <div class="container">
+        <div class="section-head section-head--light">
+          <h3>อินโฟกราฟฟิก</h3>
+          <span class="coverflow-counter" id="coverflowCounter">– / –</span>
+        </div>
+      </div>
+      <div class="coverflow">
+        <button class="coverflow-nav coverflow-prev" id="coverflowPrev" aria-label="ก่อนหน้า">‹</button>
+        <div class="coverflow-track" id="coverflowTrack"></div>
+        <button class="coverflow-nav coverflow-next" id="coverflowNext" aria-label="ถัดไป">›</button>
+      </div>
+      <p class="coverflow-hint">แตะ/คลิกที่สไลด์กลางเพื่อดูภาพเต็ม</p>
+    </section>
+
     <!-- ===== ทำเนียบเทคโนโลยีทั้งหมด: ค้นหา / กรอง / เรียง ===== -->
     <section class="all-section container">
       <div class="section-head"><h3>เทคโนโลยีทั้งหมด</h3></div>
@@ -106,6 +122,17 @@
 
   <div class="toast" id="toast" role="status"></div>
 
+  <!-- ===== Modal ซูมอินโฟกราฟฟิกเต็มจอ ===== -->
+  <div class="coverflow-modal" id="coverflowModal" hidden>
+    <button class="coverflow-modal-close" id="coverflowModalClose" aria-label="ปิด">✕</button>
+    <button class="coverflow-modal-nav coverflow-modal-prev" id="coverflowModalPrev" aria-label="ก่อนหน้า">‹</button>
+    <figure class="coverflow-modal-figure">
+      <img class="coverflow-modal-img" id="coverflowModalImg" src="" alt="">
+      <figcaption class="coverflow-modal-title" id="coverflowModalTitle"></figcaption>
+    </figure>
+    <button class="coverflow-modal-nav coverflow-modal-next" id="coverflowModalNext" aria-label="ถัดไป">›</button>
+  </div>
+
   <!-- Firebase (compat build ใช้ง่ายกับ Vanilla JS) -->
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
@@ -113,5 +140,6 @@
   <script src="js/config.js"></script>
   <script src="js/auth.js"></script>
   <script src="js/app.js"></script>
+  <script src="js/infographics.js"></script>
 </body>
 </html>
