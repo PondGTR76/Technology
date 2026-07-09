@@ -251,9 +251,14 @@ function renderCommentForm() {
   document.getElementById("btnComment").addEventListener("click", submitComment);
 }
 
-async function submitComment() {
+function submitComment() {
   const btn = document.getElementById("btnComment");
   const ta = document.getElementById("commentText");
+  sendComment(ta, btn, null);
+}
+
+/* ---------- ส่งคอมเมนต์ (ใช้ร่วมกันทั้งฟอร์มหลักและฟอร์มตอบกลับ) ---------- */
+async function sendComment(ta, btn, replyTo) {
   const text = ta.value.trim();
 
   if (!text) return showToast("พิมพ์ข้อความก่อนส่ง");
@@ -272,14 +277,14 @@ async function submitComment() {
     const res = await fetch(APP_CONFIG.GAS_URL, {
       method: "POST",
       headers: { "Content-Type": "text/plain;charset=utf-8" },
-      body: JSON.stringify({ action: "addComment", techId, text, idToken }),
+      body: JSON.stringify({ action: "addComment", techId, text, idToken, replyTo: replyTo || undefined }),
     });
     const json = await res.json();
     if (!json.ok) throw new Error(json.error || "ไม่ทราบสาเหตุ");
 
     ta.value = "";
     localStorage.setItem("lastCommentAt", String(Date.now()));
-    showToast("ส่งความคิดเห็นแล้ว");
+    showToast(replyTo ? "ส่งการตอบกลับแล้ว" : "ส่งความคิดเห็นแล้ว");
     loadComments();
   } catch (e) {
     console.error(e);
@@ -293,7 +298,7 @@ async function submitComment() {
   }
 }
 
-/* ---------- โหลดคอมเมนต์ (+ Admin Badge) ---------- */
+/* ---------- โหลดคอมเมนต์ (+ Admin Badge + ตอบกลับ 2 ชั้น) ---------- */
 async function loadComments() {
   const list = document.getElementById("commentList");
   try {
@@ -306,22 +311,93 @@ async function loadComments() {
       return;
     }
 
-    list.innerHTML = json.comments.map((c) => `
-      <li class="comment-item ${c.isAdmin ? "is-admin" : ""}">
-        <img src="${esc(c.photo || "")}" alt="" referrerpolicy="no-referrer"
-             onerror="this.style.display='none'">
-        <div>
-          <div class="comment-head">
-            <span class="comment-name">${esc(c.name)}</span>
-            ${c.isAdmin ? `<span class="badge-admin">เจ้าหน้าที่</span>` : ""}
-            <span class="comment-time">${new Date(c.timestamp).toLocaleString("th-TH")}</span>
-          </div>
-          <p class="comment-text">${esc(c.text)}</p>
-        </div>
-      </li>`).join("");
+    const all = json.comments;
+    const topLevel = all.filter((c) => !c.replyTo);
+    // คอมเมนต์เก่าที่ไม่มี id (ก่อนเพิ่มระบบตอบกลับ) จะไม่ผูกกับใครเป็นพิเศษ กันไม่ให้ดูดคอมเมนต์อื่นมาเป็นการตอบกลับผิดๆ
+    const repliesOf = (id) => !id ? [] : all
+      .filter((c) => c.replyTo === id)
+      .sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp)); // ตอบกลับเรียงเก่า→ใหม่ อ่านเป็นบทสนทนา
+
+    list.innerHTML = topLevel.map((c) => commentItemHTML(c, repliesOf(c.id))).join("");
   } catch (e) {
     list.innerHTML = `<li class="login-hint">โหลดความคิดเห็นไม่สำเร็จ (${esc(e.message)})</li>`;
   }
 }
+
+function commentHeadHTML(c) {
+  return `
+    <div class="comment-head">
+      <span class="comment-name">${esc(c.name)}</span>
+      ${c.isAdmin ? `<span class="badge-admin">เจ้าหน้าที่</span>` : ""}
+      <span class="comment-time">${new Date(c.timestamp).toLocaleString("th-TH")}</span>
+    </div>
+    <p class="comment-text">${esc(c.text)}</p>`;
+}
+
+function commentItemHTML(c, replies) {
+  return `
+    <li class="comment-item ${c.isAdmin ? "is-admin" : ""}">
+      <img src="${esc(c.photo || "")}" alt="" referrerpolicy="no-referrer" onerror="this.style.display='none'">
+      <div class="comment-body">
+        ${commentHeadHTML(c)}
+        ${c.id ? `<button class="comment-reply-btn" type="button" data-id="${esc(c.id)}">↩ ตอบกลับ</button>
+        <div class="reply-form-area" id="replyFormArea-${esc(c.id)}"></div>` : ""}
+        ${replies.length ? `<ul class="comment-replies">${replies.map(replyItemHTML).join("")}</ul>` : ""}
+      </div>
+    </li>`;
+}
+
+function replyItemHTML(r) {
+  return `
+    <li class="comment-item comment-item--reply ${r.isAdmin ? "is-admin" : ""}">
+      <img src="${esc(r.photo || "")}" alt="" referrerpolicy="no-referrer" onerror="this.style.display='none'">
+      <div class="comment-body">${commentHeadHTML(r)}</div>
+    </li>`;
+}
+
+function replyFormHTML(parentId) {
+  if (!currentUser) {
+    return `<div class="login-hint login-hint--sm">เข้าสู่ระบบด้วย Google เพื่อตอบกลับ</div>`;
+  }
+  return `
+    <div class="comment-form comment-form--reply">
+      <img src="${esc(currentUser.photoURL || "")}" alt="" referrerpolicy="no-referrer" onerror="this.style.display='none'">
+      <textarea class="reply-textarea" maxlength="500" placeholder="ตอบกลับความคิดเห็นนี้..." data-parent="${esc(parentId)}"></textarea>
+      <button class="btn btn-primary" type="button" data-parent="${esc(parentId)}">ส่ง</button>
+    </div>`;
+}
+
+/* ---------- คลิกที่ปุ่ม "ตอบกลับ" / ปุ่ม "ส่ง" ในฟอร์มตอบกลับ
+   (ผูกกับ wrap ที่มีอยู่ตั้งแต่โหลดหน้า เพราะ #commentList ถูกสร้างใหม่ทีหลังใน renderDetail) ---------- */
+wrap.addEventListener("click", (ev) => {
+  if (!ev.target.closest("#commentList")) return;
+  const replyBtn = ev.target.closest(".comment-reply-btn");
+  if (replyBtn) {
+    const id = replyBtn.dataset.id;
+    const area = document.getElementById(`replyFormArea-${id}`);
+    if (!area) return;
+    if (area.classList.contains("open")) {
+      area.classList.remove("open");
+      area.innerHTML = "";
+      return;
+    }
+    // ปิดฟอร์มตอบกลับอื่นที่เปิดค้างไว้ก่อน เหลือเปิดได้ทีละอัน
+    document.querySelectorAll(".reply-form-area.open").forEach((el) => {
+      el.classList.remove("open");
+      el.innerHTML = "";
+    });
+    area.classList.add("open");
+    area.innerHTML = replyFormHTML(id);
+    area.querySelector("textarea")?.focus();
+    return;
+  }
+
+  const sendBtn = ev.target.closest(".comment-form--reply button");
+  if (sendBtn) {
+    const parentId = sendBtn.dataset.parent;
+    const ta = document.querySelector(`.reply-textarea[data-parent="${CSS.escape(parentId)}"]`);
+    if (ta) sendComment(ta, sendBtn, parentId);
+  }
+});
 
 init();

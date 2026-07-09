@@ -37,8 +37,19 @@
     </button>`).join("");
 
   const els = [...track.querySelectorAll(".coverflow-item")];
+  let lastActiveEl = null;
+  let firstLayout = true;
+
+  /* จอเล็ก (มือถือ) โชว์แค่ข้างละ 1 อันแบบจางๆ ไม่ให้รก จอใหญ่โชว์ได้กว้างกว่า */
+  function maxVisibleDepth() {
+    const w = window.innerWidth;
+    if (w <= 460) return 1;
+    if (w <= 720) return 1;
+    return 4;
+  }
 
   function layout() {
+    const maxDepth = maxVisibleDepth();
     els.forEach((el, i) => {
       const offset = i - active;
       const depth = Math.min(Math.abs(offset), 3);
@@ -46,12 +57,35 @@
       el.style.setProperty("--depth", depth);
       el.style.zIndex = String(100 - depth);
       el.classList.toggle("is-active", offset === 0);
-      const visible = Math.abs(offset) <= 4;
-      el.style.opacity = visible ? "" : "0";
+
+      const visible = depth <= maxDepth;
+      let opacity = "0";
+      if (visible) {
+        opacity = depth === 0 ? "1" : depth === 1 ? "0.45" : "0.2";
+      }
+      el.style.opacity = opacity;
       el.style.pointerEvents = visible ? "" : "none";
     });
     counter.textContent = `${active + 1} / ${items.length}`;
+
+    const activeEl = els[active];
+    if (activeEl && activeEl !== lastActiveEl) {
+      lastActiveEl = activeEl;
+      if (!firstLayout) {
+        activeEl.classList.remove("pop-in");
+        void activeEl.offsetWidth; // รีสตาร์ท animation
+        activeEl.classList.add("pop-in");
+        activeEl.addEventListener("animationend", () => activeEl.classList.remove("pop-in"), { once: true });
+      }
+    }
+    firstLayout = false;
   }
+
+  let resizeTimer;
+  window.addEventListener("resize", () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(layout, 150);
+  });
 
   function goTo(i) {
     active = Math.max(0, Math.min(items.length - 1, i));

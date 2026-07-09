@@ -4,13 +4,18 @@
  * Google Apps Script + Google Sheets
  *
  * โครงสร้างชีต (สร้างอัตโนมัติเมื่อรันครั้งแรก):
- *   ชีต "Comments": id | timestamp | techId | uid | name | email | photo | text | isAdmin
+ *   ชีต "Comments": id | timestamp | techId | uid | name | email | photo | text | isAdmin | replyTo
  *   ชีต "Views":    techId | count
  *
  * ⚠️ ถ้าคุณเคย Deploy เวอร์ชันเก่าที่ชีต Comments ยังไม่มีคอลัมน์ "id" มาก่อน
  *    ให้เพิ่มคอลัมน์ "id" เป็นคอลัมน์แรกของชีต Comments เอง (ใส่ค่าอะไรก็ได้ในแถวเก่า
  *    เช่น เปิดคอลัมน์ A ว่างแล้วลาก Utilities.getUuid() ผ่าน Apps Script หรือปล่อยว่างได้
  *    คอมเมนต์เก่าที่ไม่มี id แค่จะกดลบผ่านเว็บไม่ได้ ต้องลบมือใน Sheets)
+ *
+ * ⚠️ ระบบตอบกลับคอมเมนต์ (reply) ต้องมีคอลัมน์ "replyTo" เป็นคอลัมน์สุดท้ายของชีต Comments
+ *    ถ้าเคย Deploy เวอร์ชันก่อนหน้านี้มาแล้ว ให้เปิดชีต Comments แล้วเพิ่มหัวข้อ "replyTo"
+ *    ในคอลัมน์ว่างถัดจากคอลัมน์สุดท้ายที่มีอยู่ (ไม่ต้องแทรกคอลัมน์กลาง แค่เพิ่มต่อท้ายเฉยๆ)
+ *    แถวเก่าที่ไม่มีค่าคอลัมน์นี้จะถูกอ่านเป็นค่าว่าง = ถือเป็นคอมเมนต์หลัก (ไม่ใช่การตอบกลับ) โดยอัตโนมัติ
  * ============================================================
  */
 
@@ -24,7 +29,7 @@ const FIREBASE_WEB_API_KEY = "AIzaSyAi0VNWQQM5RmjZzqW-SjxQWWB3m3C8_Uk"; // apiKe
 
 const SHEET_COMMENTS = "Comments";
 const SHEET_VIEWS = "Views";
-const COMMENTS_HEADERS = ["id", "timestamp", "techId", "uid", "name", "email", "photo", "text", "isAdmin"];
+const COMMENTS_HEADERS = ["id", "timestamp", "techId", "uid", "name", "email", "photo", "text", "isAdmin", "replyTo"];
 const MAX_COMMENT_LEN = 500;
 const SERVER_COOLDOWN_SEC = 5; // Rate limit ฝั่งเซิร์ฟเวอร์ (เชื่อถือได้กว่าฝั่งหน้าเว็บ)
 
@@ -81,6 +86,8 @@ function addComment(body) {
 
   const isAdminUser = ADMIN_EMAILS.indexOf(user.email.toLowerCase()) !== -1;
   const commentId = Utilities.getUuid();
+  // replyTo: id ของคอมเมนต์หลักที่กำลังตอบกลับ (ว่าง = เป็นคอมเมนต์หลักเอง ไม่ใช่การตอบกลับ)
+  const replyTo = body.replyTo ? String(body.replyTo) : "";
 
   const sheet = getSheet(SHEET_COMMENTS, COMMENTS_HEADERS);
   sheet.appendRow([
@@ -93,6 +100,7 @@ function addComment(body) {
     user.picture || "",
     text,
     isAdminUser,
+    replyTo,
   ]);
 
   return { ok: true, isAdmin: isAdminUser, id: commentId };
@@ -105,7 +113,7 @@ function getComments(techId) {
   const comments = [];
 
   for (let i = 1; i < rows.length; i++) {
-    const [id, timestamp, rowTechId, uid, name, email, photo, text, isAdminCol] = rows[i];
+    const [id, timestamp, rowTechId, uid, name, email, photo, text, isAdminCol, replyTo] = rows[i];
     if (String(rowTechId) !== String(techId)) continue;
     comments.push({
       id: id,
@@ -114,6 +122,7 @@ function getComments(techId) {
       photo: photo,
       text: text,
       isAdmin: isAdminCol === true || isAdminCol === "TRUE",
+      replyTo: replyTo || "",
       // ⚠️ ไม่ส่ง email/uid กลับไปหน้าเว็บ เพื่อความเป็นส่วนตัว
     });
   }
