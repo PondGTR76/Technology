@@ -41,25 +41,28 @@
   let lastActiveEl = null;
   let firstLayout = true;
 
-  /* จอเล็ก (มือถือ) โชว์แค่ข้างละ 1 อันแบบจางๆ ไม่ให้รก จอใหญ่โชว์ได้กว้างกว่า */
+  /* จอเล็ก (มือถือ) โชว์แค่ข้างละ 1 อันแบบจางๆ ไม่ให้รก จอใหญ่โชว์ได้กว้างกว่าแต่ต้องมีจุดตัด
+     ไม่งั้นทุกสไลด์ (แม้แต่ตัวไกลสุด) จะยังโผล่มาจางๆ ทับกันเต็มจอ */
   function maxVisibleDepth() {
     const w = window.innerWidth;
-    if (w <= 460) return 1;
     if (w <= 720) return 1;
-    return 4;
+    return 2;
   }
 
   function layout() {
     const maxDepth = maxVisibleDepth();
     els.forEach((el, i) => {
       const offset = i - active;
-      const depth = Math.min(Math.abs(offset), 3);
+      const absOffset = Math.abs(offset);
+      const depth = Math.min(absOffset, 3); // ใช้คุมความลึก (translateZ) ของสไลด์ที่ยังโชว์อยู่เท่านั้น
       el.style.setProperty("--offset", offset);
       el.style.setProperty("--depth", depth);
       el.style.zIndex = String(100 - depth);
       el.classList.toggle("is-active", offset === 0);
 
-      const visible = depth <= maxDepth;
+      // ใช้ absOffset จริง (ไม่ใช่ depth ที่ถูก cap ไว้ที่ 3) ตัดสินว่าจะโชว์ไหม
+      // ไม่งั้นสไลด์ที่อยู่ไกลสุดๆ จะยังนับว่า depth<=maxDepth เสมอ โผล่มาซ้อนกันเต็มจอ
+      const visible = absOffset <= maxDepth;
       let opacity = "0";
       if (visible) {
         opacity = depth === 0 ? "1" : depth === 1 ? "0.45" : "0.2";
