@@ -51,6 +51,39 @@ function renderNotFound() {
     </div>`;
 }
 
+/* ---------- Markdown เบื้องต้นสำหรับเนื้อหารายละเอียด (bold / bullet list / ย่อหน้า) ---------- */
+function inlineMd(line) {
+  return esc(line).replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
+}
+
+function renderMarkdown(text) {
+  if (!text) return "";
+  const headingRe = /^\*\*(.+)\*\*$/;
+
+  return text.split(/\n{2,}/).map((block) => {
+    let lines = block.split("\n").filter((l) => l.trim() !== "");
+    if (!lines.length) return "";
+
+    let html = "";
+
+    // บรรทัดแรกเป็นหัวข้อตัวหนาล้วน (ทั้งบรรทัดอยู่ใน **...**) แยกเป็น <h3> ก่อนเสมอ
+    // แม้จะมีเนื้อหาอื่น (bullet list / ย่อหน้า) ตามมาในบล็อกเดียวกันก็ตาม
+    const headingLine = lines[0].trim();
+    if (headingRe.test(headingLine) && !headingLine.startsWith("- ")) {
+      html += `<h3>${inlineMd(headingLine.match(headingRe)[1])}</h3>`;
+      lines = lines.slice(1);
+    }
+    if (!lines.length) return html;
+
+    if (lines.every((l) => l.trim().startsWith("- "))) {
+      html += `<ul>${lines.map((l) => `<li>${inlineMd(l.trim().slice(2))}</li>`).join("")}</ul>`;
+    } else {
+      html += `<p>${lines.map(inlineMd).join("<br>")}</p>`;
+    }
+    return html;
+  }).join("");
+}
+
 /* ---------- Render เนื้อหา ---------- */
 function renderDetail() {
   document.title = `${tech.title} | กวจ.สสว.วท.กห.`;
@@ -73,7 +106,7 @@ function renderDetail() {
       <span>📌 ${esc(tech.source || "")}</span>
     </div>
 
-    <article class="detail-body">${esc(tech.description)}</article>
+    <article class="detail-body">${renderMarkdown(tech.description)}</article>
 
     <div class="tag-row">
       ${(tech.tags || []).map((t) => `<span class="tag">#${esc(t)}</span>`).join("")}

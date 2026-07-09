@@ -764,9 +764,21 @@ a:hover { text-decoration: underline; }
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-sm);
   padding: 26px 28px;
-  white-space: pre-line;
   font-size: .98rem;
 }
+.detail-body p { margin: 0 0 14px; line-height: 1.7; }
+.detail-body p:last-child { margin-bottom: 0; }
+.detail-body h3 {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  margin: 24px 0 10px;
+  line-height: 1.4;
+}
+.detail-body h3:first-child { margin-top: 0; }
+.detail-body ul { margin: 0 0 14px; padding-left: 22px; }
+.detail-body ul:last-child { margin-bottom: 0; }
+.detail-body li { margin: 6px 0; line-height: 1.65; }
+.detail-body strong { color: var(--ink); font-weight: 700; }
 
 .tag-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
 .tag {
