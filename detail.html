@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>กำลังโหลด... | กวจ.สสว.วท.กห.</title>
+
+  <!-- SEO -->
+  <meta name="description" content="รายละเอียดเทคโนโลยี โดย กวจ.สสว.วท.กห." />
+
+  <!-- Fonts: Chakra Petch (display) + IBM Plex Sans Thai (body) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=IBM+Plex+Sans+Thai:wght@400;500;700&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- ===== Header / Branding ===== -->
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="logo-ring">
+        <img src="assets/images/logo.png" alt="โลโก้ กวจ.สสว.วท.กห."
+             onerror="this.outerHTML='<div class=&quot;logo-fallback&quot;>กวจ.</div>'" />
+      </div>
+      <div class="brand-text">
+        <a href="index.html" style="text-decoration:none; color:inherit;">
+          <div class="brand-name">กวจ.สสว.วท.กห.</div>
+          <div class="brand-sub">ศูนย์ติดตามเทคโนโลยี</div>
+        </a>
+      </div>
+      <div class="header-auth" id="authArea">
+        <button class="btn btn-primary" id="btnLogin">เข้าสู่ระบบด้วย Google</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== Auth Gate: ต้องล็อกอินก่อนถึงจะเห็นเนื้อหา ===== -->
+  <div id="authGate" class="auth-gate">
+    <div class="auth-gate-card">
+      <div class="logo-ring" style="width:64px;height:64px;margin:0 auto 14px;">
+        <img src="assets/images/logo.png" alt="โลโก้ กวจ.สสว.วท.กห."
+             onerror="this.outerHTML='<div class=&quot;logo-fallback&quot; style=&quot;width:56px;height:56px;font-size:16px;&quot;>กวจ.</div>'" />
+      </div>
+      <h2>กวจ.สสว.วท.กห.</h2>
+      <p>กรุณาเข้าสู่ระบบด้วยบัญชี Google เพื่อเข้าดูเนื้อหาเทคโนโลยี</p>
+      <p class="auth-gate-warn" id="authGateWarn" hidden>
+        ตรวจพบว่าเปิดผ่านแอปแชท (LINE/Facebook/Instagram) ซึ่ง Google บล็อกการเข้าสู่ระบบด้วยเหตุผลด้านความปลอดภัย
+        กรุณาเปิดลิงก์นี้ในเบราว์เซอร์ เช่น Chrome หรือ Safari แล้วลองอีกครั้ง
+      </p>
+      <button class="btn btn-primary" id="btnGateLogin">เข้าสู่ระบบด้วย Google</button>
+    </div>
+  </div>
+
+  <!-- ===== เนื้อหาหลัก (โชว์หลังล็อกอิน) ===== -->
+  <main class="gated-content" id="gatedContent" hidden>
+    <div id="detailWrap" class="detail-wrap container">
+      <!-- Render ด้วย JS (detail.js) -->
+    </div>
+  </main>
+
+  <!-- ===== Footer (บังคับ) ===== -->
+  <footer class="site-footer">
+    <p class="footer-line">พัฒนาโดย <span class="dev-name">ส.อ.ฐานทัพ พุ่มเกิด</span> เจ้าหน้าที่ติดตามเทคโนโลยี กวจ.สสว.วท.กห. (โปรแกรมเมอร์)</p>
+    <p class="footer-line">หากพบปัญหาหรือมีข้อเสนอแนะ ติดต่อ Line : popondcbs</p>
+  </footer>
+
+  <div class="toast" id="toast" role="status"></div>
+
+  <!-- Firebase (compat build ใช้ง่ายกับ Vanilla JS) -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+
+  <script src="js/config.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/detail.js"></script>
+</body>
+</html>

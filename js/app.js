@@ -56,7 +56,8 @@ async function loadData() {
     const res = await fetch(APP_CONFIG.DATA_URL, { cache: "no-store" });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const data = await res.json();
-    state.all = data.technologies || [];
+    // ซ่อนรายการที่ยังกรอกเนื้อหาไม่ครบ (ไม่มี summary) ไม่ให้ขึ้นหน้าเว็บจริง
+    state.all = (data.technologies || []).filter((t) => t.summary && t.summary.trim());
     state.categories = data.categories || [];
     renderCategoryChips();
     render();

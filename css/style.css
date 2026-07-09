@@ -332,7 +332,7 @@ a:hover { text-decoration: underline; }
 .side-card .side-title { font-family: var(--font-display); font-size: .92rem; font-weight: 700; margin: 3px 0; line-height: 1.35; }
 .side-card .side-date { font-size: .74rem; color: var(--ink-soft); }
 
-/* การ์ดข้าง Hero — แนวตั้ง สูงเท่ากันครึ่งหนึ่งของรูปใหญ่พอดี ไม่มีช่องว่าง */
+/* การ์ดข้าง Hero — รูปเต็มกรอบพร้อมคำบรรยายซ้อนทับด้านล่าง (แบบเดียวกับสไลด์หลัก) */
 @media (min-width: 880px) {
   .hero-section { grid-template-columns: 2fr 1fr; align-items: stretch; }
   .hero-side { height: 100%; }
@@ -341,11 +341,30 @@ a:hover { text-decoration: underline; }
   .side-card--hero {
     flex: 1 1 0;
     min-height: 0;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 0;
+    gap: 0;
+    overflow: hidden;
   }
   .side-card--hero .side-thumb {
-    width: 84px;
-    height: 84px;
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
   }
+  .side-card--hero .side-info {
+    position: relative;
+    z-index: 1;
+    padding: 12px 14px 10px;
+    background: linear-gradient(to top, rgba(10,20,35,.88), rgba(10,20,35,.2) 75%, transparent);
+  }
+  .side-card--hero .side-cat { color: rgba(255,255,255,.85); }
+  .side-card--hero .side-title { color: #fff; }
+  .side-card--hero .side-date { color: rgba(255,255,255,.75); }
 }
 
 
