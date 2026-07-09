@@ -32,14 +32,6 @@ function openInExternalBrowser() {
 }
 
 (function initAuth() {
-  // ปรับปุ่มบนการ์ดล็อกอินให้ถูกต้องตั้งแต่โหลดหน้าแรก (ไม่ต้องรอ Firebase resolve)
-  if (IN_APP_BROWSER) {
-    const btn = document.getElementById("btnGateLogin");
-    const warn = document.getElementById("authGateWarn");
-    if (btn) btn.textContent = "เปิดในเบราว์เซอร์เพื่อเข้าสู่ระบบ";
-    if (warn) warn.hidden = false;
-  }
-
   try {
     firebase.initializeApp(FIREBASE_CONFIG);
   } catch (e) {
@@ -53,46 +45,9 @@ function openInExternalBrowser() {
   auth.onAuthStateChanged((user) => {
     currentUser = user;
     renderAuthArea(user);
-    applyAuthGate(user);
-    // แจ้งหน้าอื่น (เช่น detail.js) ว่า auth เปลี่ยน
+    // แจ้งหน้าอื่น (เช่น detail.js) ว่า auth เปลี่ยน — ไม่ล็อกอินก็ดูเนื้อหาได้ปกติ
+    // แค่คอมเมนต์ไม่ได้ (บังคับเช็คแยกที่ detail.js ตอนส่งคอมเมนต์)
     document.dispatchEvent(new CustomEvent("auth:changed", { detail: user }));
-  });
-
-  /** บังคับล็อกอินก่อนเห็นเนื้อหา: สลับการแสดงผล authGate <-> gated-content */
-  function applyAuthGate(user) {
-    const gate = document.getElementById("authGate");
-    const content = document.querySelector(".gated-content");
-    if (!gate || !content) return; // หน้านี้ไม่มีระบบกั้น (เช่น preview.html)
-
-    if (user) {
-      gate.hidden = true;
-      content.hidden = false;
-    } else {
-      gate.hidden = false;
-      content.hidden = true;
-      updateGateLoginButton();
-    }
-  }
-
-  /** ปรับปุ่ม/ข้อความบนการ์ดล็อกอิน เมื่อตรวจพบว่าเปิดผ่านแอปแชท */
-  function updateGateLoginButton() {
-    const btn = document.getElementById("btnGateLogin");
-    const warn = document.getElementById("authGateWarn");
-    if (!btn) return;
-    if (IN_APP_BROWSER) {
-      btn.textContent = "เปิดในเบราว์เซอร์เพื่อเข้าสู่ระบบ";
-      if (warn) warn.hidden = false;
-    } else {
-      btn.textContent = "เข้าสู่ระบบด้วย Google";
-      if (warn) warn.hidden = true;
-    }
-  }
-
-  // ปุ่มล็อกอินบนหน้าจอกั้น
-  document.addEventListener("click", (ev) => {
-    if (ev.target && ev.target.id === "btnGateLogin") {
-      IN_APP_BROWSER ? openInExternalBrowser() : login();
-    }
   });
 
   function renderAuthArea(user) {

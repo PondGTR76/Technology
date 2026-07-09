@@ -36,25 +36,8 @@
     </div>
   </header>
 
-  <!-- ===== Auth Gate: ต้องล็อกอินก่อนถึงจะเห็นเนื้อหา ===== -->
-  <div id="authGate" class="auth-gate">
-    <div class="auth-gate-card">
-      <div class="logo-ring" style="width:64px;height:64px;margin:0 auto 14px;">
-        <img src="assets/images/logo.png" alt="โลโก้ กวจ.สสว.วท.กห."
-             onerror="this.outerHTML='<div class=&quot;logo-fallback&quot; style=&quot;width:56px;height:56px;font-size:16px;&quot;>กวจ.</div>'" />
-      </div>
-      <h2>กวจ.สสว.วท.กห.</h2>
-      <p>กรุณาเข้าสู่ระบบด้วยบัญชี Google เพื่อเข้าดูเนื้อหาเทคโนโลยี</p>
-      <p class="auth-gate-warn" id="authGateWarn" hidden>
-        ตรวจพบว่าเปิดผ่านแอปแชท (LINE/Facebook/Instagram) ซึ่ง Google บล็อกการเข้าสู่ระบบด้วยเหตุผลด้านความปลอดภัย
-        กรุณาเปิดลิงก์นี้ในเบราว์เซอร์ เช่น Chrome หรือ Safari แล้วลองอีกครั้ง
-      </p>
-      <button class="btn btn-primary" id="btnGateLogin">เข้าสู่ระบบด้วย Google</button>
-    </div>
-  </div>
-
-  <!-- ===== เนื้อหาหลัก (โชว์หลังล็อกอิน) ===== -->
-  <main class="gated-content" id="gatedContent" hidden>
+  <!-- ===== เนื้อหาหลัก: ดูได้โดยไม่ต้องล็อกอิน (ล็อกอินเฉพาะตอนจะคอมเมนต์) ===== -->
+  <main class="gated-content" id="gatedContent">
     <div id="detailWrap" class="detail-wrap container">
       <!-- Render ด้วย JS (detail.js) -->
     </div>
