@@ -4,7 +4,7 @@
 
 const APP_CONFIG = {
   // 1) URL ของ Google Apps Script Web App (ได้จากตอน Deploy)
-  GAS_URL: "https://script.google.com/macros/s/AKfycbyi-5e7BUOLDSjUCEO3oJVMc-sA4842cLFvc8CKk6sc-YKeQDZSqMpiWV6KrnKVR7k/exec",
+  GAS_URL: "https://script.google.com/macros/s/AKfycbzs-mhUI7AHh9eJdvOkaV6o_18TG-t4MxMLYVbHq-h7ASrqFOIfymDtJVR4eMldDoYM/exec",
 
   // 2) ฐาน URL รูปภาพผ่าน jsDelivr CDN
   //    รูปแบบ: https://cdn.jsdelivr.net/gh/<user>/<repo>@<branch>/
