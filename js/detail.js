@@ -8,6 +8,8 @@ const techId = new URLSearchParams(location.search).get("id");
 
 let tech = null;
 let catLabelMap = {};
+let prevTech = null; // เทคโนโลยีใหม่กว่า (ก่อนหน้าในลิสต์)
+let nextTech = null; // เทคโนโลยีเก่ากว่า (ถัดไปในลิสต์)
 
 /* ---------- โหลดข้อมูลเทคโนโลยี ---------- */
 async function init() {
@@ -25,6 +27,16 @@ async function init() {
     catLabelMap = Object.fromEntries((data.categories || []).map((c) => [c.id, c.label]));
     tech = (data.technologies || []).find((t) => t.id === techId);
     if (!tech) return renderNotFound();
+
+    // เรียงลำดับแบบเดียวกับหน้าแรก (มาใหม่สุดก่อน) เพื่อหาเทคโนโลยีก่อนหน้า/ถัดไป
+    const visibleList = (data.technologies || [])
+      .filter((t) => t.summary && t.summary.trim())
+      .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+    const idx = visibleList.findIndex((t) => t.id === techId);
+    if (idx !== -1) {
+      prevTech = visibleList[idx - 1] || null;
+      nextTech = visibleList[idx + 1] || null;
+    }
 
     renderDetail();
     countView();      // นับวิว (ไม่บล็อก UI)
@@ -89,7 +101,12 @@ function renderDetail() {
   document.title = `${tech.title} | กวจ.สสว.วท.กห.`;
 
   wrap.innerHTML = `
-    <nav class="breadcrumb"><a href="index.html">หน้าแรก</a> › ${esc(catLabelMap[tech.category] || tech.category)}</nav>
+    <div class="detail-topbar">
+      <button class="btn-back" id="btnBack" aria-label="ย้อนกลับ" title="ย้อนกลับ">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <nav class="breadcrumb"><a href="index.html">หน้าแรก</a> › ${esc(catLabelMap[tech.category] || tech.category)}</nav>
+    </div>
 
     <div class="detail-hero">
       <img src="${esc(assetUrl(tech.image))}" alt="${esc(tech.title)}" onerror="this.remove()">
@@ -120,6 +137,26 @@ function renderDetail() {
       </div>
     </div>` : ""}
 
+    ${(prevTech || nextTech) ? `
+    <nav class="post-nav" aria-label="เทคโนโลยีก่อนหน้า/ถัดไป">
+      ${prevTech ? `
+      <a class="post-nav-item post-nav-prev" href="detail.html?id=${encodeURIComponent(prevTech.id)}">
+        <span class="post-nav-arrow">←</span>
+        <span class="post-nav-text">
+          <span class="post-nav-label">ก่อนหน้า</span>
+          <span class="post-nav-title">${esc(prevTech.title)}</span>
+        </span>
+      </a>` : `<span class="post-nav-item post-nav-empty"></span>`}
+      ${nextTech ? `
+      <a class="post-nav-item post-nav-next" href="detail.html?id=${encodeURIComponent(nextTech.id)}">
+        <span class="post-nav-text">
+          <span class="post-nav-label">ถัดไป</span>
+          <span class="post-nav-title">${esc(nextTech.title)}</span>
+        </span>
+        <span class="post-nav-arrow">→</span>
+      </a>` : `<span class="post-nav-item post-nav-empty"></span>`}
+    </nav>` : ""}
+
     <section class="comments-section">
       <h2>ความคิดเห็น</h2>
       <div id="commentFormArea"></div>
@@ -129,8 +166,18 @@ function renderDetail() {
     </section>`;
 
   document.getElementById("btnShare").addEventListener("click", copyLink);
+  document.getElementById("btnBack").addEventListener("click", goBack);
   renderCommentForm();
   document.addEventListener("auth:changed", renderCommentForm);
+}
+
+/* ---------- ปุ่มย้อนกลับ: ใช้ history ถ้ามี ไม่งั้นกลับหน้าแรก (กันเคสเปิดลิงก์ตรงจากแชท) ---------- */
+function goBack() {
+  if (document.referrer && new URL(document.referrer).origin === location.origin) {
+    history.back();
+  } else {
+    location.href = "index.html";
+  }
 }
 
 /* ---------- Share / Copy Link ---------- */

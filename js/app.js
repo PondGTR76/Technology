@@ -82,6 +82,7 @@ async function loadViews() {
       state.views = json.views || {};
       render();
       renderPopularStrip(); // จัดอันดับใหม่ตามยอดวิวจริง
+      renderHomeTabGrid(document.querySelector("#homeTabs .chip.active")?.dataset.cat || "all");
     }
   } catch (e) {
     console.warn("โหลดยอดวิวไม่สำเร็จ (ไม่กระทบการใช้งาน):", e.message);

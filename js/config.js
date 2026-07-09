@@ -78,3 +78,18 @@ function esc(s) {
     ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])
   );
 }
+
+/* ---------- ปุ่มกลับขึ้นด้านบน (โผล่หลังเลื่อนลงมาไกลพอ ใช้ได้ทั้งคอมและมือถือ) ---------- */
+(function initBackToTop() {
+  const btn = document.createElement("button");
+  btn.id = "btnToTop";
+  btn.className = "btn-to-top";
+  btn.setAttribute("aria-label", "กลับขึ้นด้านบน");
+  btn.innerHTML = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M18 15l-6-6-6 6"/></svg>`;
+  btn.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
+  document.body.appendChild(btn); // config.js โหลดท้าย body อยู่แล้ว document.body พร้อมใช้งานแน่นอน
+
+  window.addEventListener("scroll", () => {
+    btn.classList.toggle("show", window.scrollY > 500);
+  }, { passive: true });
+})();

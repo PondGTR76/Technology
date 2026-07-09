@@ -715,10 +715,34 @@ a:hover { text-decoration: underline; }
 /* ---------- 9. หน้ารายละเอียด ---------- */
 .detail-wrap { padding: 30px 0 50px; }
 
+.detail-topbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.btn-back {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: var(--glass-strong);
+  color: var(--ink);
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  transition: background .15s, transform .15s;
+}
+.btn-back:hover { background: var(--cyan-soft); color: var(--cyan); }
+.btn-back:active { transform: scale(.92); }
+
 .breadcrumb {
   font-size: .84rem;
   color: var(--ink-soft);
-  margin-bottom: 16px;
 }
 
 .detail-hero {
@@ -814,6 +838,56 @@ a:hover { text-decoration: underline; }
   margin-bottom: 4px;
 }
 .source-box-text { font-size: .86rem; color: var(--ink-soft); line-height: 1.6; }
+
+/* ---------- 9b. นำทางเทคโนโลยีก่อนหน้า/ถัดไป ---------- */
+.post-nav {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-top: 26px;
+}
+.post-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 16px;
+  min-height: 44px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--glass-strong);
+  box-shadow: var(--shadow-sm);
+  text-decoration: none;
+  color: inherit;
+  transition: box-shadow .2s, transform .2s, border-color .2s;
+}
+.post-nav-item:hover { text-decoration: none; box-shadow: var(--shadow-md); border-color: var(--cyan); transform: translateY(-1px); }
+.post-nav-next { justify-content: flex-end; text-align: right; }
+.post-nav-arrow { font-size: 1.2rem; color: var(--cyan); flex: 0 0 auto; }
+.post-nav-text { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.post-nav-label {
+  font-family: var(--font-display);
+  font-size: .7rem;
+  font-weight: 700;
+  color: var(--ink-soft);
+  text-transform: uppercase;
+  letter-spacing: .05em;
+}
+.post-nav-title {
+  font-size: .88rem;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+.post-nav-empty { visibility: hidden; }
+
+@media (max-width: 640px) {
+  .post-nav { grid-template-columns: 1fr; }
+  .post-nav-next { justify-content: flex-start; text-align: left; }
+  .post-nav-empty { display: none; }
+}
 
 /* ---------- 10. คอมเมนต์ + Admin Badge ---------- */
 .comments-section { margin-top: 40px; }
@@ -958,6 +1032,33 @@ a:hover { text-decoration: underline; }
   transition: opacity .25s, translate .25s;
 }
 .toast.show { opacity: 1; translate: -50% 0; }
+
+.btn-to-top {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 40;
+  width: 46px;
+  height: 46px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 50%;
+  background: var(--cyan);
+  color: #fff;
+  box-shadow: var(--shadow-md);
+  cursor: pointer;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition: opacity .2s, transform .2s, visibility .2s, background .15s;
+}
+.btn-to-top.show { opacity: 1; visibility: visible; transform: translateY(0); }
+.btn-to-top:hover { background: #0b6a8c; }
+@media (max-width: 640px) {
+  .btn-to-top { right: 14px; bottom: 14px; width: 44px; height: 44px; }
+}
 
 /* ---------- 12. Footer (บังคับ) ---------- */
 .site-footer {
