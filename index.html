@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>กวจ.สสว.วท.กห. | ศูนย์ติดตามเทคโนโลยี</title>
+
+  <!-- SEO -->
+  <meta name="description" content="เว็บไซต์ติดตามและเผยแพร่เทคโนโลยีที่น่าสนใจ โดย กวจ.สสว.วท.กห." />
+
+  <!-- Open Graph (แชร์ลิงก์แล้วขึ้นพรีวิวสวยงาม) -->
+  <!-- ⚠️ แก้ URL ให้เป็นโดเมน GitHub Pages ของคุณ -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="กวจ.สสว.วท.กห." />
+  <meta property="og:title" content="ศูนย์ติดตามเทคโนโลยี กวจ.สสว.วท.กห." />
+  <meta property="og:description" content="รวมเทคโนโลยีน่าสนใจ อัปเดตล่าสุด พร้อมสถิติยอดวิวและความคิดเห็น" />
+  <meta property="og:url" content="https://YOUR-USERNAME.github.io/YOUR-REPO/" />
+  <meta property="og:image" content="https://cdn.jsdelivr.net/gh/YOUR-USERNAME/YOUR-REPO@main/assets/images/og-cover.webp" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <!-- Fonts: Chakra Petch (display) + IBM Plex Sans Thai (body) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=IBM+Plex+Sans+Thai:wght@400;500;700&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- ===== Header / Branding ===== -->
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="logo-ring">
+        <!-- ใส่โลโก้จริงที่ assets/images/logo.webp (ถ้าโหลดไม่ได้จะโชว์ตัวย่อแทน) -->
+        <img src="assets/images/logo.webp" alt="โลโก้ กวจ.สสว.วท.กห."
+             onerror="this.outerHTML='<div class=&quot;logo-fallback&quot;>กวจ.</div>'" />
+      </div>
+      <div class="brand-text">
+        <div class="brand-name">กวจ.สสว.วท.กห.</div>
+        <div class="brand-sub">ศูนย์ติดตามเทคโนโลยี</div>
+      </div>
+      <div class="header-auth" id="authArea">
+        <button class="btn btn-primary" id="btnLogin">เข้าสู่ระบบด้วย Google</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== Auth Gate: ต้องล็อกอินก่อนถึงจะเห็นเนื้อหา ===== -->
+  <div id="authGate" class="auth-gate">
+    <div class="auth-gate-card">
+      <div class="logo-ring" style="width:64px;height:64px;margin:0 auto 14px;">
+        <img src="assets/images/logo.webp" alt="โลโก้ กวจ.สสว.วท.กห."
+             onerror="this.outerHTML='<div class=&quot;logo-fallback&quot; style=&quot;width:56px;height:56px;font-size:16px;&quot;>กวจ.</div>'" />
+      </div>
+      <h2>กวจ.สสว.วท.กห.</h2>
+      <p>กรุณาเข้าสู่ระบบด้วยบัญชี Google เพื่อเข้าดูเนื้อหาเทคโนโลยี</p>
+      <button class="btn btn-primary" id="btnGateLogin">เข้าสู่ระบบด้วย Google</button>
+    </div>
+  </div>
+
+  <!-- ===== เนื้อหาหลัก (โชว์หลังล็อกอิน) ===== -->
+  <main class="gated-content" id="gatedContent" hidden>
+
+    <!-- ===== Hero: เทคโนโลยีเด่นล่าสุด ===== -->
+    <section class="hero-section container" id="heroSection" aria-label="เทคโนโลยีเด่น">
+      <!-- Render ด้วย JS -->
+    </section>
+
+    <!-- ===== หมวดหมู่ + แถบข้าง "มาใหม่ล่าสุด" ===== -->
+    <section class="split-section container">
+      <div class="split-main">
+        <div class="section-head">
+          <h3>เทคโนโลยีล่าสุด</h3>
+          <div class="home-tabs" id="homeTabs"></div>
+        </div>
+        <div class="cards-grid compact-grid" id="homeTabGrid" aria-live="polite"></div>
+      </div>
+      <aside class="split-side">
+        <div class="section-head"><h4>มาใหม่ล่าสุด</h4></div>
+        <ul class="recent-list" id="recentList"></ul>
+      </aside>
+    </section>
+
+    <!-- ===== ยอดนิยม (เลื่อนแนวนอน) ===== -->
+    <section class="popular-section container">
+      <div class="section-head"><h3>ยอดนิยม</h3></div>
+      <div class="popular-strip" id="popularStrip"></div>
+    </section>
+
+    <!-- ===== ทำเนียบเทคโนโลยีทั้งหมด: ค้นหา / กรอง / เรียง ===== -->
+    <section class="all-section container">
+      <div class="section-head"><h3>เทคโนโลยีทั้งหมด</h3></div>
+
+      <div class="toolbar">
+        <div class="search-box">
+          <input type="search" id="searchInput" placeholder="ค้นหาเทคโนโลยี..." aria-label="ค้นหาเทคโนโลยี" />
+        </div>
+        <div class="filter-row" id="filterRow">
+          <button class="chip active" data-cat="all">ทั้งหมด</button>
+          <!-- ปุ่มหมวดหมู่จะถูกสร้างจาก JSON อัตโนมัติ -->
+          <select class="sort-select" id="sortSelect" aria-label="เรียงลำดับ">
+            <option value="newest">มาใหม่ล่าสุด</option>
+            <option value="views">ยอดวิวสูงสุด</option>
+          </select>
+        </div>
+      </div>
+
+      <section class="cards-grid" id="cardsGrid" aria-live="polite">
+        <!-- Skeleton / การ์ดจริง ถูก render ด้วย JS -->
+      </section>
+    </section>
+  </main>
+
+  <!-- ===== Footer (บังคับ) ===== -->
+  <footer class="site-footer">
+    <p class="footer-line">พัฒนาโดย <span class="dev-name">ส.อ.ฐานทัพ พุ่มเกิด</span> เจ้าหน้าที่ติดตามเทคโนโลยี กวจ.สสว.วท.กห. (โปรแกรมเมอร์)</p>
+    <p class="footer-line">หากพบปัญหาหรือมีข้อเสนอแนะ ติดต่อ Line : popondcbs</p>
+  </footer>
+
+  <div class="toast" id="toast" role="status"></div>
+
+  <!-- Firebase (compat build ใช้ง่ายกับ Vanilla JS) -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+
+  <script src="js/config.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

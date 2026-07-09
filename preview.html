@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>🎨 Design Preview | กวจ.สสว.วท.กห.</title>
+  <!--
+    ============================================================
+    หน้านี้ใช้ "ดูดีไซน์เท่านั้น" — รูปเป็น placeholder มั่วๆ จาก picsum.photos
+    ไม่ต่อ Firebase / GAS ใดๆ เปิดไฟล์ตรงๆ ได้เลย (ต้องมีอินเทอร์เน็ตเพื่อโหลดรูป+ฟอนต์)
+    โครงสร้างตรงกับ index.html จริง 1:1 (Hero / แท็บหมวดหมู่+Sidebar / ยอดนิยม / ทั้งหมด)
+    ใช้ css/style.css ตัวเดียวกับเว็บจริง → แก้ธีมที่ style.css แล้วเห็นผลทั้งคู่
+    ============================================================
+  -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=IBM+Plex+Sans+Thai:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    /* ป้ายกำกับส่วนต่างๆ เฉพาะหน้าพรีวิว */
+    .preview-label {
+      max-width: var(--maxw);
+      margin: 44px auto 10px;
+      padding: 0 20px;
+      font-family: var(--font-display);
+      font-size: .78rem;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--magenta);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== Header ===== -->
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="logo-ring"><div class="logo-fallback">กวจ.</div></div>
+      <div class="brand-text">
+        <div class="brand-name">กวจ.สสว.วท.กห.</div>
+        <div class="brand-sub">ศูนย์ติดตามเทคโนโลยี</div>
+      </div>
+      <div class="header-auth">
+        <div class="user-chip">
+          <img src="https://picsum.photos/seed/user/60" alt="">
+          <span>ส.อ.ฐานทัพ</span>
+        </div>
+        <button class="btn">ออกจากระบบ</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ===== 1) Hero: เทคโนโลยีเด่นล่าสุด ===== -->
+    <div class="preview-label" style="margin-top:20px;">// Hero — เทคโนโลยีเด่นล่าสุด</div>
+    <section class="hero-section container" id="heroSection"></section>
+
+    <!-- ===== 2) หมวดหมู่ + Sidebar "มาใหม่ล่าสุด" ===== -->
+    <div class="preview-label">// แท็บหมวดหมู่ + มาใหม่ล่าสุด</div>
+    <section class="split-section container">
+      <div class="split-main">
+        <div class="section-head">
+          <h3>เทคโนโลยีล่าสุด</h3>
+          <div class="home-tabs" id="homeTabs"></div>
+        </div>
+        <div class="cards-grid compact-grid" id="homeTabGrid"></div>
+      </div>
+      <aside class="split-side">
+        <div class="section-head"><h4>มาใหม่ล่าสุด</h4></div>
+        <ul class="recent-list" id="recentList"></ul>
+      </aside>
+    </section>
+
+    <!-- ===== 3) ยอดนิยม ===== -->
+    <div class="preview-label">// ยอดนิยม (เลื่อนแนวนอน)</div>
+    <section class="popular-section container">
+      <div class="section-head"><h3>ยอดนิยม</h3></div>
+      <div class="popular-strip" id="popularStrip"></div>
+    </section>
+
+    <!-- ===== 4) เทคโนโลยีทั้งหมด: Toolbar + Grid ===== -->
+    <div class="preview-label">// เทคโนโลยีทั้งหมด (ค้นหา / กรอง / เรียง)</div>
+    <section class="all-section container">
+      <div class="toolbar">
+        <div class="search-box">
+          <input type="search" placeholder="ค้นหาเทคโนโลยี..." />
+        </div>
+        <div class="filter-row">
+          <button class="chip active">ทั้งหมด</button>
+          <button class="chip">ปัญญาประดิษฐ์ (AI)</button>
+          <button class="chip">โดรน / UAV</button>
+          <button class="chip">ไซเบอร์</button>
+          <button class="chip">การสื่อสาร</button>
+          <select class="sort-select">
+            <option>มาใหม่ล่าสุด</option>
+            <option>ยอดวิวสูงสุด</option>
+          </select>
+        </div>
+      </div>
+      <section class="cards-grid" id="mockGrid"></section>
+    </section>
+
+    <!-- ===== 5) Skeleton Loader ===== -->
+    <div class="preview-label">// Skeleton Loader (ตอนรอโหลด)</div>
+    <div class="container">
+      <div class="cards-grid" style="padding-top:0;">
+        <div class="skeleton-card"><div class="sk sk-media"></div><div class="sk sk-line w60"></div><div class="sk sk-line w90"></div><div class="sk sk-line w40"></div></div>
+        <div class="skeleton-card"><div class="sk sk-media"></div><div class="sk sk-line w60"></div><div class="sk sk-line w90"></div><div class="sk sk-line w40"></div></div>
+        <div class="skeleton-card"><div class="sk sk-media"></div><div class="sk sk-line w60"></div><div class="sk sk-line w90"></div><div class="sk sk-line w40"></div></div>
+      </div>
+    </div>
+
+    <!-- ===== 6) Error State ===== -->
+    <div class="preview-label">// Error State (โหลดข้อมูลไม่สำเร็จ)</div>
+    <div class="container">
+      <div class="cards-grid" style="padding-top:0;">
+        <div class="state-box">
+          <div class="state-icon">📡</div>
+          <h3>โหลดข้อมูลไม่สำเร็จ</h3>
+          <p>เกิดข้อผิดพลาดในการเชื่อมต่อ — ตรวจสอบอินเทอร์เน็ตแล้วลองอีกครั้ง</p>
+          <button class="btn btn-primary">โหลดใหม่</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== 7) หน้ารายละเอียด + คอมเมนต์ + Admin Badge ===== -->
+    <div class="preview-label">// หน้ารายละเอียด + คอมเมนต์</div>
+    <div class="container detail-wrap" style="padding-top:0;">
+      <nav class="breadcrumb"><a href="#">หน้าแรก</a> › โดรน / UAV</nav>
+      <div class="detail-hero">
+        <img src="https://picsum.photos/seed/hero/1200/500" alt="">
+      </div>
+      <div class="detail-head">
+        <h1>โดรน FPV โจมตี — ตัวเปลี่ยนเกมสนามรบสมัยใหม่</h1>
+      </div>
+      <div class="detail-meta">
+        <span>📅 20 มิถุนายน 2569</span>
+        <span class="card-views">1,248 วิว</span>
+        <span class="card-comments">9 ความเห็น</span>
+        <span>📌 ฝ่ายติดตามเทคโนโลยี กวจ.สสว.วท.กห.</span>
+      </div>
+      <article class="detail-body">โดรน FPV (First-Person View) เป็นอากาศยานไร้คนขับขนาดเล็กที่นักบินควบคุมผ่านแว่นวิดีโอแบบเรียลไทม์ ถูกนำมาใช้ในภารกิจโจมตีแม่นยำด้วยต้นทุนต่อลำที่ต่ำมาก
+
+ประเด็นที่ต้องติดตาม ได้แก่ การพัฒนาระบบต่อต้านโดรน (Counter-UAS) และการใช้ AI ช่วยนำวิถีในช่วงสุดท้ายเมื่อสัญญาณถูกรบกวน</article>
+      <div class="tag-row">
+        <span class="tag">#UAV</span><span class="tag">#FPV</span><span class="tag">#Counter-UAS</span>
+      </div>
+
+      <div class="share-row" style="margin-top:20px;">
+        <button class="btn" onclick="demoToast()">🔗 คัดลอกลิงก์</button>
+        <button class="btn share-btn fb">Facebook</button>
+        <button class="btn share-btn x">X (Twitter)</button>
+      </div>
+
+      <section class="related-section">
+        <div class="section-head"><h3>เทคโนโลยีที่เกี่ยวข้อง</h3></div>
+        <div class="cards-grid compact-grid" id="relatedGrid"></div>
+      </section>
+
+      <section class="comments-section">
+        <div class="section-head">
+          <h2>ความคิดเห็น (2)</h2>
+          <select class="comment-sort">
+            <option>ใหม่สุดก่อน</option>
+            <option>เก่าสุดก่อน</option>
+          </select>
+        </div>
+        <div class="comment-form">
+          <img src="https://picsum.photos/seed/user/60" alt="">
+          <textarea placeholder="แสดงความคิดเห็นอย่างสร้างสรรค์..."></textarea>
+          <button class="btn btn-primary">ส่ง</button>
+        </div>
+        <ul class="comment-list">
+          <li class="comment-item is-admin">
+            <img src="https://picsum.photos/seed/admin/60" alt="">
+            <div class="comment-body">
+              <div class="comment-head">
+                <span class="comment-name">ส.อ.ฐานทัพ พุ่มเกิด</span>
+                <span class="badge-admin">เจ้าหน้าที่</span>
+                <span class="comment-time">8 ก.ค. 2569 10:32</span>
+                <button class="comment-delete">ลบ</button>
+              </div>
+              <p class="comment-text">ขอบคุณทุกความคิดเห็นครับ หากมีเทคโนโลยีที่อยากให้ติดตามเพิ่ม แจ้งได้เลยครับ</p>
+            </div>
+          </li>
+          <li class="comment-item">
+            <img src="https://picsum.photos/seed/u2/60" alt="">
+            <div class="comment-body">
+              <div class="comment-head">
+                <span class="comment-name">Somchai T.</span>
+                <span class="comment-time">7 ก.ค. 2569 18:05</span>
+                <button class="comment-delete">ลบ</button>
+              </div>
+              <p class="comment-text">ข้อมูลแน่นมากครับ อยากเห็นหัวข้อระบบต่อต้านโดรนแบบละเอียดต่อเลย</p>
+            </div>
+          </li>
+        </ul>
+      </section>
+    </div>
+  </main>
+
+  <!-- ===== Footer ===== -->
+  <footer class="site-footer">
+    <p class="footer-line">พัฒนาโดย <span class="dev-name">ส.อ.ฐานทัพ พุ่มเกิด</span> เจ้าหน้าที่ติดตามเทคโนโลยี กวจ.สสว.วท.กห. (โปรแกรมเมอร์)</p>
+    <p class="footer-line">หากพบปัญหาหรือมีข้อเสนอแนะ ติดต่อ Line : popondcbs</p>
+  </footer>
+
+  <div class="toast" id="toast" role="status"></div>
+
+  <script>
+    /* ============================================================
+       ข้อมูล Mock — โครงสร้างตรงกับ technologies.json จริง
+       ============================================================ */
+    const categories = [
+      { id: "ai",     label: "ปัญญาประดิษฐ์ (AI)" },
+      { id: "drone",  label: "โดรน / UAV" },
+      { id: "cyber",  label: "ไซเบอร์" },
+      { id: "comms",  label: "การสื่อสาร" },
+      { id: "energy", label: "พลังงาน" },
+    ];
+    const catLabel = Object.fromEntries(categories.map(c => [c.id, c.label]));
+
+    const mock = [
+      { id: "t1", title: "ระบบจดจำเป้าหมายด้วย AI", category: "ai", views: 2431, comments: 14, date: "1 ก.ค. 2569", isNew: true,
+        sum: "เทคโนโลยี Computer Vision ตรวจจับและจำแนกเป้าหมายจากภาพถ่ายทางอากาศแบบเรียลไทม์" },
+      { id: "t2", title: "โดรน FPV โจมตี", category: "drone", views: 1248, comments: 9, date: "20 มิ.ย. 2569", isNew: true,
+        sum: "อากาศยานไร้คนขับขนาดเล็กมุมมองบุคคลที่หนึ่ง ต้นทุนต่ำ ที่เปลี่ยนโฉมสนามรบสมัยใหม่" },
+      { id: "t3", title: "การสื่อสารเชิงควอนตัม", category: "comms", views: 986, comments: 3, date: "11 พ.ค. 2569", isNew: false,
+        sum: "การเข้ารหัสด้วยกุญแจควอนตัม (QKD) ที่ตรวจจับการดักฟังได้ในระดับฟิสิกส์" },
+      { id: "t4", title: "สถาปัตยกรรม Zero Trust", category: "cyber", views: 1754, comments: 11, date: "2 เม.ย. 2569", isNew: false,
+        sum: "แนวคิดความมั่นคงไซเบอร์ 'ไม่เชื่อใครโดยปริยาย' มาตรฐานใหม่ของหน่วยงานความมั่นคง" },
+      { id: "t5", title: "แบตเตอรี่โซลิดสเตต", category: "energy", views: 603, comments: 2, date: "18 มี.ค. 2569", isNew: false,
+        sum: "แหล่งพลังงานความหนาแน่นสูง ปลอดภัยกว่า สำหรับยุทโธปกรณ์และยานพาหนะไฟฟ้า" },
+      { id: "t6", title: "อาวุธลอยรอเป้า (Loitering Munition)", category: "drone", views: 1102, comments: 7, date: "28 มิ.ย. 2569", isNew: true,
+        sum: "ระบบอาวุธที่บินวนเหนือพื้นที่เป้าหมาย รอจังหวะโจมตีด้วยความแม่นยำสูง" },
+      { id: "t7", title: "เกราะปฏิกิริยาอัตโนมัติ (APS)", category: "ai", views: 842, comments: 4, date: "9 ก.พ. 2569", isNew: false,
+        sum: "ระบบตรวจจับและสกัดกั้นกระสุนต่อต้านรถถังก่อนถึงเป้าหมายแบบอัตโนมัติ" },
+      { id: "t8", title: "ดาวเทียมสื่อสารวงโคจรต่ำ (LEO)", category: "comms", views: 1509, comments: 6, date: "3 ม.ค. 2569", isNew: false,
+        sum: "โครงข่ายดาวเทียมวงโคจรต่ำ ให้แบนด์วิดท์สูง หน่วงต่ำ ครอบคลุมพื้นที่ห่างไกล" },
+    ];
+
+    function imgUrl(id, w = 640, h = 360) { return `https://picsum.photos/seed/${id}/${w}/${h}`; }
+
+    function cardHTML(t, opts = {}) {
+      return `
+        <a class="tech-card" href="javascript:void(0)">
+          ${opts.rank ? `<span class="rank-badge">${opts.rank}</span>` : (t.isNew ? `<span class="badge-new">NEW</span>` : "")}
+          <div class="card-media"><img src="${imgUrl(t.id)}" alt="" loading="lazy"></div>
+          <div class="card-body">
+            <div class="card-top">
+              <span class="card-cat cat-${t.category}">${catLabel[t.category]}</span>
+              ${opts.rank ? "" : `<span class="card-date">${t.date}</span>`}
+            </div>
+            <h3 class="card-title">${t.title}</h3>
+            <p class="card-summary">${t.sum}</p>
+            <div class="card-meta">
+              <span class="card-stats">👁 ${t.views.toLocaleString("th-TH")} วิว<span class="sep">·</span>💬 ${t.comments} ความเห็น</span>
+            </div>
+          </div>
+        </a>`;
+    }
+
+    function sideCardHTML(t, opts = {}) {
+      return `
+        <a class="side-card ${opts.hero ? "side-card--hero" : ""}" href="javascript:void(0)">
+          <div class="side-thumb">
+            <img src="${imgUrl(t.id, 160, 160)}" alt="">
+          </div>
+          <div class="side-info">
+            <div class="side-cat">${catLabel[t.category]}</div>
+            <div class="side-title">${t.title}</div>
+            <div class="side-date">${t.date}</div>
+          </div>
+        </a>`;
+    }
+
+    /* ---------- 1) Hero ---------- */
+    (function renderHero() {
+      const slides = mock.slice(0, 3);
+      const side = mock.slice(3, 5);
+      document.getElementById("heroSection").innerHTML = `
+        <div class="hero-slider" id="heroSlider">
+          ${slides.map((t, i) => `
+            <a class="hero-slide ${i === 0 ? "active" : ""}" data-i="${i}" href="javascript:void(0)">
+              <img src="${imgUrl(t.id, 1200, 700)}" alt="">
+              <div class="hero-caption">
+                <span class="card-cat cat-${t.category}">${catLabel[t.category]}</span>
+                <h2>${t.title}</h2>
+                <p>${t.sum}</p>
+              </div>
+            </a>`).join("")}
+          <div class="hero-dots">
+            ${slides.map((_, i) => `<button data-i="${i}" class="${i === 0 ? "active" : ""}"></button>`).join("")}
+          </div>
+        </div>
+        <div class="hero-side">${side.map(t => sideCardHTML(t, { hero: true })).join("")}</div>`;
+
+      const slider = document.getElementById("heroSlider");
+      let active = 0;
+      function goTo(i) {
+        active = (i + slides.length) % slides.length;
+        slider.querySelectorAll(".hero-slide").forEach(el => el.classList.toggle("active", Number(el.dataset.i) === active));
+        slider.querySelectorAll(".hero-dots button").forEach(el => el.classList.toggle("active", Number(el.dataset.i) === active));
+      }
+      slider.querySelectorAll(".hero-dots button").forEach(btn => {
+        btn.addEventListener("click", (ev) => { ev.preventDefault(); goTo(Number(btn.dataset.i)); resetTimer(); });
+      });
+      let timer;
+      function resetTimer() { clearInterval(timer); timer = setInterval(() => goTo(active + 1), 5000); }
+      resetTimer();
+      slider.addEventListener("mouseenter", () => clearInterval(timer));
+      slider.addEventListener("mouseleave", resetTimer);
+    })();
+
+    /* ---------- 2) แท็บหมวดหมู่ + Sidebar ---------- */
+    (function renderTabs() {
+      const tabsEl = document.getElementById("homeTabs");
+      const chips = [{ id: "all", label: "ทั้งหมด" }, ...categories];
+      tabsEl.innerHTML = chips.map((c, i) => `<button class="chip ${i === 0 ? "active" : ""}" data-cat="${c.id}">${c.label}</button>`).join("");
+
+      function renderGrid(cat) {
+        const items = (cat === "all" ? mock : mock.filter(t => t.category === cat)).slice(0, 6);
+        document.getElementById("homeTabGrid").innerHTML = items.map(t => cardHTML(t)).join("");
+      }
+      renderGrid("all");
+      tabsEl.addEventListener("click", (ev) => {
+        const btn = ev.target.closest(".chip");
+        if (!btn) return;
+        tabsEl.querySelectorAll(".chip").forEach(c => c.classList.remove("active"));
+        btn.classList.add("active");
+        renderGrid(btn.dataset.cat);
+      });
+
+      document.getElementById("recentList").innerHTML =
+        [...mock].slice(0, 5).map(t => `<li>${sideCardHTML(t)}</li>`).join("");
+    })();
+
+    /* ---------- 3) ยอดนิยม ---------- */
+    (function renderPopular() {
+      const items = [...mock].sort((a, b) => b.views - a.views).slice(0, 8);
+      document.getElementById("popularStrip").innerHTML =
+        items.map((t, i) => cardHTML(t, { rank: i + 1 })).join("");
+    })();
+
+    /* ---------- 4) เทคโนโลยีทั้งหมด ---------- */
+    document.getElementById("mockGrid").innerHTML = mock.map(t => cardHTML(t)).join("");
+
+    /* ---------- 5) เทคโนโลยีที่เกี่ยวข้อง (หน้ารายละเอียด) ---------- */
+    document.getElementById("relatedGrid").innerHTML =
+      mock.filter(t => t.category === "drone").map(t => cardHTML(t)).join("");
+
+    function demoToast() {
+      const t = document.getElementById("toast");
+      t.textContent = "คัดลอกลิงก์แล้ว พร้อมแชร์!";
+      t.classList.add("show");
+      setTimeout(() => t.classList.remove("show"), 2200);
+    }
+  </script>
+</body>
+</html>
