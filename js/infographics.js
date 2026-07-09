@@ -33,7 +33,8 @@
 
   track.innerHTML = items.map((it, i) => `
     <button class="coverflow-item" type="button" data-i="${i}" aria-label="${esc(it.title)}">
-      <img src="${esc(it.image)}" alt="${esc(it.title)}" loading="lazy">
+      <span class="cover"><img src="${esc(it.image)}" alt="${esc(it.title)}" loading="lazy"></span>
+      <span class="reflection" style="background-image:url('${esc(it.image)}')" aria-hidden="true"></span>
     </button>`).join("");
 
   const els = [...track.querySelectorAll(".coverflow-item")];
