@@ -792,6 +792,29 @@ a:hover { text-decoration: underline; }
   font-weight: 600;
 }
 
+.source-box {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  margin-top: 22px;
+  padding: 14px 16px;
+  background: var(--cyan-soft);
+  border: 1px solid rgba(14,127,168,.3);
+  border-left: 4px solid var(--cyan);
+  border-radius: var(--radius);
+}
+.source-box-icon { font-size: 1.3rem; line-height: 1; flex: 0 0 auto; }
+.source-box-label {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: .78rem;
+  color: var(--cyan);
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  margin-bottom: 4px;
+}
+.source-box-text { font-size: .86rem; color: var(--ink-soft); line-height: 1.6; }
+
 /* ---------- 10. คอมเมนต์ + Admin Badge ---------- */
 .comments-section { margin-top: 40px; }
 .comments-section .section-head {

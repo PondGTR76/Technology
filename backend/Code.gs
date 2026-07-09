@@ -14,7 +14,8 @@ const ADMIN_EMAILS = [
   "your-admin@gmail.com",   // 👈 ใส่อีเมลแอดมิน (ของคุณ) — เช็คฝั่ง Server ปลอมไม่ได้
 ];
 
-const FIREBASE_PROJECT_ID = "YOUR_PROJECT"; // projectId เดียวกับใน config.js
+const FIREBASE_PROJECT_ID = "techwatch-9b433"; // projectId เดียวกับใน config.js
+const FIREBASE_WEB_API_KEY = "AIzaSyAi0VNWQQM5RmjZzqW-SjxQWWB3m3C8_Uk"; // apiKey เดียวกับใน config.js
 
 const SHEET_COMMENTS = "Comments";
 const SHEET_VIEWS = "Views";
@@ -147,25 +148,34 @@ function getViews() {
 /**
  * ยืนยันว่า token มาจาก Firebase โปรเจกต์ของเราจริง
  * → หน้าเว็บปลอมชื่อ/อีเมลเพื่อหลอกเอา Admin Badge ไม่ได้
+ *
+ * ⚠️ ใช้ Identity Toolkit REST API (accounts:lookup) แทน oauth2.googleapis.com/tokeninfo
+ * เพราะ tokeninfo ใช้ตรวจ Google Sign-In OAuth token เท่านั้น ไม่รองรับ Firebase ID Token
+ * (คนละ issuer/format กัน) ถ้าใช้ tokeninfo ตรวจ Firebase ID Token จะ fail ทุกครั้ง
+ * ทำให้คอมเมนต์ไม่ได้เลยพร้อมขึ้น "กรุณาเข้าสู่ระบบใหม่"
  */
 function verifyIdToken(idToken) {
   if (!idToken) return null;
   try {
     const res = UrlFetchApp.fetch(
-      "https://oauth2.googleapis.com/tokeninfo?id_token=" + encodeURIComponent(idToken),
-      { muteHttpExceptions: true }
+      "https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=" + FIREBASE_WEB_API_KEY,
+      {
+        method: "post",
+        contentType: "application/json",
+        payload: JSON.stringify({ idToken: idToken }),
+        muteHttpExceptions: true,
+      }
     );
     if (res.getResponseCode() !== 200) return null;
     const info = JSON.parse(res.getContentText());
-
-    // token ต้องออกให้โปรเจกต์ Firebase ของเราเท่านั้น
-    if (info.aud !== FIREBASE_PROJECT_ID) return null;
+    const user = info.users && info.users[0];
+    if (!user) return null;
 
     return {
-      uid: info.user_id || info.sub,
-      email: String(info.email || "").toLowerCase(),
-      name: info.name || "",
-      picture: info.picture || "",
+      uid: user.localId,
+      email: String(user.email || "").toLowerCase(),
+      name: user.displayName || "",
+      picture: user.photoUrl || "",
     };
   } catch (e) {
     return null;

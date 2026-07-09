@@ -103,7 +103,6 @@ function renderDetail() {
     <div class="detail-meta">
       <span>📅 ${new Date(tech.timestamp).toLocaleDateString("th-TH", { day: "numeric", month: "long", year: "numeric" })}</span>
       <span class="card-views" id="viewCount">— วิว</span>
-      <span>📌 ${esc(tech.source || "")}</span>
     </div>
 
     <article class="detail-body">${renderMarkdown(tech.description)}</article>
@@ -111,6 +110,15 @@ function renderDetail() {
     <div class="tag-row">
       ${(tech.tags || []).map((t) => `<span class="tag">#${esc(t)}</span>`).join("")}
     </div>
+
+    ${tech.source ? `
+    <div class="source-box">
+      <span class="source-box-icon">📚</span>
+      <div>
+        <div class="source-box-label">แหล่งที่มาข้อมูล</div>
+        <div class="source-box-text">${esc(tech.source)}</div>
+      </div>
+    </div>` : ""}
 
     <section class="comments-section">
       <h2>ความคิดเห็น</h2>
